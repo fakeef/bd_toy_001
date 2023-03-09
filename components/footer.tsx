@@ -3,8 +3,8 @@ import KiwiImg from "../public/kiwibird.svg";
 
 export default function Footer() {
   return (
-    <footer className="text-gray-600 body-font">
-      <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+    <footer className="text-gray-600 body-font bg-sky-100 border-4 border-t-sky-800">
+      <div className="container px-5 py-4 mx-auto flex items-center sm:flex-row flex-col">
         <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
           <Image
             src={KiwiImg}
