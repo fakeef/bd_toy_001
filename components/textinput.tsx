@@ -43,10 +43,29 @@ export default function Textinput() {
     const detectedLanguage = detectLanguage(newText);
     setInputtext(newText);
     setLang(detectedLanguage);
-    if (lang === "English") {
+    if (detectedLanguage === "") {
+      setCnt(0);
+    } else if (lang === "English") {
       const numOfWords = countEnglishWords(inputtext);
       setCnt(numOfWords);
-      console.log(`Counter: ${cnt}`);
+    }
+  }
+
+  function countText() {
+    if (lang === "") {
+      return "";
+    } else if (lang === "English") {
+      if (cnt === 1) {
+        return "1 word";
+      } else {
+        return `${cnt} words`;
+      }
+    } else {
+      if (cnt == 1) {
+        return "1 character";
+      } else {
+        `${cnt} characters`;
+      }
     }
   }
 
@@ -70,7 +89,7 @@ export default function Textinput() {
           <div className="flex-row justify-between w-full md:w-full flex items-start px-3">
             {/* <div className="items-start w-1/2 text-gray-700 px-2 mr-auto"> */}
             <p className="text-xs md:text-sm pt-px">current lang: {lang}</p>
-            <p className="text-xs md:text-sm pt-px">count: {cnt}</p>
+            <p className="text-xs md:text-sm pt-px">{countText()}</p>
             {/* </div> */}
           </div>
         </div>
