@@ -18,6 +18,7 @@ export default function Textinput() {
     und: "",
   };
 
+  // 입력 텍스트에 대해 언어 종류를 리턴
   function detectLanguage(text: string) {
     const languageCode = franc(text, {
       minLength: 3,
@@ -26,6 +27,7 @@ export default function Textinput() {
     return langMapper[languageCode];
   }
 
+  // 영어 문장에 대해 "워드" 수를 카운팅
   function countEnglishWords(text: string): number {
     // Remove any non-word characters (punctuation, whitespace, etc.)
     const cleanedText = text.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
@@ -38,7 +40,20 @@ export default function Textinput() {
     return englishWords.length;
   }
 
-  function countChar(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  function countKoreanChars(text: string) {
+    const koreanRegex = /[\u3131-\uD79D]/g;
+    console.log(text.match(koreanRegex) || []);
+    const koreanChars = (text.match(koreanRegex) || []).length;
+    return koreanChars;
+  }
+
+  function countJapaneseChars(text: string) {
+    const japaneseRegex = /[\u3040-\u30ff\u31f0-\u31ff\uff00-\uff9f]/g;
+    const japaneseChars = (text.match(japaneseRegex) || []).length;
+    return japaneseChars;
+  }
+
+  function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const newText = e.target.value;
     const detectedLanguage = detectLanguage(newText);
     setInputtext(newText);
@@ -48,9 +63,16 @@ export default function Textinput() {
     } else if (lang === "English") {
       const numOfWords = countEnglishWords(inputtext);
       setCnt(numOfWords);
+    } else if (lang === "Korean") {
+      const numOfChars = countKoreanChars(inputtext);
+      setCnt(numOfChars);
+    } else if (lang === "Japanese") {
+      const numOfChars = countJapaneseChars(inputtext);
+      setCnt(numOfChars);
     }
   }
 
+  // word or character 수 최종 출력 텍스트 생성
   function countText() {
     if (lang === "") {
       return "";
@@ -64,7 +86,7 @@ export default function Textinput() {
       if (cnt == 1) {
         return "1 character";
       } else {
-        `${cnt} characters`;
+        return `${cnt} characters`;
       }
     }
   }
@@ -80,10 +102,10 @@ export default function Textinput() {
           <div className="w-full md:w-full h-full px-3 mb-2 mt-2">
             <textarea
               className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-full py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
-              name="body"
+              name="inputtext"
               placeholder="Type Your Text"
               required
-              onChange={countChar}
+              onChange={onChange}
             ></textarea>
           </div>
           <div className="flex-row justify-between w-full md:w-full flex items-start px-3">
